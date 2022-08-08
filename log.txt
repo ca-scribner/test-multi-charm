@@ -1,0 +1,13 @@
+Starting to push 'ca-scribner-test-charm_ubuntu-20.04-amd64.charm'
+Uploading... (--->)
+Uploading... (<---)
+Uploading bytes ended, id 18c208d9-2d5c-482e-aa13-31e629c0cd22
+Upload 18c208d9-2d5c-482e-aa13-31e629c0cd22 started, got status url /v1/charm/ca-scribner-test-charm/revisions/review?upload-id=18c208d9-2d5c-482e-aa13-31e629c0cd22
+Status checked: {'revisions': [{'errors': None, 'revision': None, 'status': 'new', 'upload-id': '18c208d9-2d5c-482e-aa13-31e629c0cd22'}]}
+Status checked: {'revisions': [{'errors': None, 'revision': 25, 'status': 'new', 'upload-id': '18c208d9-2d5c-482e-aa13-31e629c0cd22'}]}
+Status checked: {'revisions': [{'errors': None, 'revision': 25, 'status': 'new', 'upload-id': '18c208d9-2d5c-482e-aa13-31e629c0cd22'}]}
+Status checked: {'revisions': [{'errors': None, 'revision': 25, 'status': 'new', 'upload-id': '18c208d9-2d5c-482e-aa13-31e629c0cd22'}]}
+Status checked: {'revisions': [{'errors': None, 'revision': 25, 'status': 'approved', 'upload-id': '18c208d9-2d5c-482e-aa13-31e629c0cd22'}]}
+{
+    "revision": 25
+}

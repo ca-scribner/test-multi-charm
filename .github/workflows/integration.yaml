@@ -1,0 +1,52 @@
+# reusable workflow triggered by other actions
+name: Continuous Integration
+
+on:
+  workflow_call:
+    secrets:
+      charmcraft-credentials:
+        required: true
+
+jobs:
+  get-charm-paths:
+    name: Generate the Charm Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      charm_paths_list: ${{ steps.get-charm-paths.outputs.CHARM_PATHS_LIST }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get paths for all charms in repo
+        id: get-charm-paths
+        run: bash ./.github/workflows/get-charm-paths.sh
+
+  lib-check:
+    name: Check libraries
+    runs-on: ubuntu-latest
+    needs: get-charm-paths
+    strategy:
+      fail-fast: false
+      matrix: 
+        charm-path: ${{ fromJson(needs.get-charm-paths.outputs.charm_paths_list) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Check libs
+        uses: canonical/charming-actions/check-libraries@1.0.3
+        with:
+          credentials: "${{ secrets.charmcraft-credentials }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          charm-path: "${{ matrix.charm-path }}"
+
+  unit:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    needs: get-charm-paths
+    strategy:
+      fail-fast: false
+      matrix: 
+        charm-path: ${{ fromJson(needs.get-charm-paths.outputs.charm_paths_list) }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "success - would run on ${{ matrix.charm-path }}"

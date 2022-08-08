@@ -1,0 +1,14 @@
+name: ca-scribner-test-charm-2
+summary: Charm for testing charmhub actions
+description: Charm for testing charmhub actions
+containers:
+  noop:
+    resource: noop
+resources:
+  noop:
+    type: oci-image
+    description: ''
+    upstream-source: alpine:3.16.0
+  myfile:
+    type: file
+    filename: myfile.txt
