@@ -9,7 +9,7 @@ jobs:
     name: Get the charm paths in this repo
     runs-on: ubuntu-latest
     outputs:
-      charm_paths: ${{ steps.get-charm-paths.outputs.charm_paths }}
+      charm-paths: ${{ steps.get-charm-paths.outputs.charm-paths }}
     steps:
       - name: Try the get-charm-paths action
         id: get-charm-paths
@@ -21,7 +21,7 @@ jobs:
     needs: get-charm-paths
     strategy:
       matrix: 
-        charm-path: ${{ fromJson(needs.get-charm-paths.outputs.charm_paths ) }}
+        charm-path: ${{ fromJson(needs.get-charm-paths.outputs.charm-paths ) }}
     steps:
       - name: Echo charm path
         run: echo "got charm path = ${{ matrix.charm-path }}"
