@@ -1,9 +1,5 @@
 name: Testing a get-charm-paths action
 
-# On pull_request, we:
-# * always publish to charmhub at latest/edge/branchname
-# * always run tests
-
 on:
   push:
 
