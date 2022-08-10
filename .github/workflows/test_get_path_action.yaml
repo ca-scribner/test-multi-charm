@@ -1,0 +1,14 @@
+name: Testing a get-charm-paths action
+
+# On pull_request, we:
+# * always publish to charmhub at latest/edge/branchname
+# * always run tests
+
+on:
+  pull_request:
+
+jobs:
+
+  main:
+    - name: Try the get-charm-paths action
+      uses: ca-scribner/github-actions-recipes/get-charm-paths@master
