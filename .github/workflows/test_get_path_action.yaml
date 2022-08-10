@@ -5,7 +5,7 @@ name: Testing a get-charm-paths action
 # * always run tests
 
 on:
-  pull_request:
+  push:
 
 jobs:
 
