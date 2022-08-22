@@ -4,24 +4,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  get-charm-paths-tmate:
-    name: Generate the Charm Matrix content (tmate)
-    runs-on: ubuntu-latest
-    outputs:
-      # Note this uses a different name than the others
-      charm_paths: ${{ steps.get-charm-paths.outputs.CHARM_PATHS_LIST }}
-    steps:
-      - uses: actions/checkout@v2
-        with: 
-          fetch-depth: 0
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        timeout-minutes: 15
-      - name: Get paths for all charms in repo
-        id: get-charm-paths
-        run: bash .github/workflows/get-charm-paths.sh
+  # For debugging
+  # get-charm-paths-tmate:
+  #   name: Generate the Charm Matrix content (tmate)
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     # Note this uses a different name than the others
+  #     charm_paths: ${{ steps.get-charm-paths.outputs.CHARM_PATHS_LIST }}
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with: 
+  #         fetch-depth: 0
+  #     - name: Setup tmate session
+  #       uses: mxschmitt/action-tmate@v3
+  #       timeout-minutes: 15
+  #     - name: Get paths for all charms in repo
+  #       id: get-charm-paths
+  #       run: bash .github/workflows/get-charm-paths.sh
 
-
+  # Using a local script
   get-charm-paths-script:
     name: Generate the Charm Matrix content (script)
     runs-on: ubuntu-latest
@@ -59,6 +60,7 @@ jobs:
       - run: |
           echo "Got charm path: ${{ matrix.charm-path }}"
 
+  # Using a bash-based github action
   get-charm-paths-bash:
     name: Generate the Charm Matrix content (bash)
     runs-on: ubuntu-latest
@@ -92,6 +94,7 @@ jobs:
       - run: |
           echo "Got charm path: ${{ matrix.charm-path }}"
 
+  # Using a python-based github action
   get-charm-paths-python:
     name: Generate the Charm Matrix content (python)
     runs-on: ubuntu-latest
