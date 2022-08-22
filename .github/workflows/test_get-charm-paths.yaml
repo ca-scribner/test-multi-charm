@@ -1,0 +1,127 @@
+name: Demo get-charm-paths
+
+on:
+  workflow_dispatch:
+
+jobs:
+  get-charm-paths-tmate:
+    name: Generate the Charm Matrix content (tmate)
+    runs-on: ubuntu-latest
+    outputs:
+      # Note this uses a different name than the others
+      charm_paths: ${{ steps.get-charm-paths.outputs.CHARM_PATHS_LIST }}
+    steps:
+      - uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 15
+      - name: Get paths for all charms in repo
+        id: get-charm-paths
+        run: bash .github/workflows/get-charm-paths.sh
+
+
+  get-charm-paths-script:
+    name: Generate the Charm Matrix content (script)
+    runs-on: ubuntu-latest
+    outputs:
+      # Note this uses a different name than the others
+      charm_paths: ${{ steps.get-charm-paths.outputs.CHARM_PATHS_LIST }}
+    steps:
+      - uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   timeout-minutes: 15
+      - name: Get paths for all charms in repo
+        id: get-charm-paths
+        run: bash .github/workflows/get-charm-paths.sh
+
+  echo-charm-paths-script:
+    name: Echo charm paths emitted (script)
+    runs-on: ubuntu-latest
+    needs: get-charm-paths-script
+    steps:
+      - run: |
+          echo "Got charm_paths: ${{ needs.get-charm-paths-script.outputs.charm_paths }}"
+
+  use-charm-paths-script:
+    name: Use charm paths in a matrix (script)
+    runs-on: ubuntu-latest
+    needs: get-charm-paths-script
+    strategy:
+      fail-fast: false
+      matrix:
+        charm-path: ${{ fromJson(needs.get-charm-paths-script.outputs.charm_paths) }}
+    steps:
+      - run: |
+          echo "Got charm path: ${{ matrix.charm-path }}"
+
+  get-charm-paths-bash:
+    name: Generate the Charm Matrix content (bash)
+    runs-on: ubuntu-latest
+    outputs:
+      charm_paths: ${{ steps.get-charm-paths.outputs.charm-paths }}
+    steps:
+      - uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+      - name: Get paths for all charms in this repo
+        id: get-charm-paths
+        uses: ca-scribner/github-actions-recipes/get-charm-paths@master
+
+  echo-charm-paths-bash:
+    name: Echo charm paths emitted (bash)
+    runs-on: ubuntu-latest
+    needs: get-charm-paths-bash
+    steps:
+      - run: |
+          echo "Got charm_paths: ${{ needs.get-charm-paths-bash.outputs.charm_paths }}"
+
+  use-charm-paths-bash:
+    name: Use charm paths in a matrix (bash)
+    runs-on: ubuntu-latest
+    needs: get-charm-paths-bash
+    strategy:
+      fail-fast: false
+      matrix:
+        charm-path: ${{ fromJson(needs.get-charm-paths-bash.outputs.charm_paths) }}
+    steps:
+      - run: |
+          echo "Got charm path: ${{ matrix.charm-path }}"
+
+  get-charm-paths-python:
+    name: Generate the Charm Matrix content (python)
+    runs-on: ubuntu-latest
+    outputs:
+      charm_paths: ${{ steps.get-charm-paths.outputs.charm-paths }}
+    steps:
+      - uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+      - name: Get paths for all charms in this repo
+        id: get-charm-paths
+        uses: ca-scribner/github-actions-recipes/get-charm-paths-python@master
+
+  echo-charm-paths-python:
+    name: Echo charm paths emitted (python)
+    runs-on: ubuntu-latest
+    needs: get-charm-paths-python
+    steps:
+      - run: |
+          echo "Got charm_paths: ${{ needs.get-charm-paths-python.outputs.charm_paths }}"
+
+  use-charm-paths-python:
+    name: Use charm paths in a matrix (python)
+    runs-on: ubuntu-latest
+    needs: get-charm-paths-python
+    strategy:
+      fail-fast: false
+      matrix:
+        charm-path: ${{ fromJson(needs.get-charm-paths-python.outputs.charm_paths) }}
+    steps:
+      - run: |
+          echo "Got charm path: ${{ matrix.charm-path }}"
+
