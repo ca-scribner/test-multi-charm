@@ -108,7 +108,7 @@ jobs:
           commit-message: "Update charm libs${{ steps.compile-inputs.pr_message-suffix}}"
           signoff: false
           delete-branch: true
-          branch: "automated-update-charm-libs${{ steps.compile-inputs.branch-suffix"
+          branch: "automated-update-charm-libs${{ steps.compile-inputs.branch-suffix }}"
 
       - name: Print Created Pull Request
         if: ${{ steps.create-pull-request.outputs.pull-request-number }}
