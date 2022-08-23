@@ -52,13 +52,21 @@ jobs:
       #   env:
       #     CHARMCRAFT_AUTH: ${{ secrets.CHARMCRAFT_CREDENTIALS }}
       #   run: charmcraft fetch-lib
+      - name: show charm-2 LIBPATCH before fetch
+        run: |
+          grep LIBPATCH charms/ca-scribner-test-charm-2/lib/charms/observability_libs/v0/juju_topology.py
       - name: Check libraries
         uses: canonical/charming-actions/check-libraries@1.0.3
         with:
           credentials: "${{ secrets.CHARMCRAFT_CREDENTIALS }}"
           github-token: "${{ secrets.GITHUB_TOKEN }}"
           charm-path: "${{ matrix.charm-path }}"
-
+      - name: show charm-2 LIBPATCH after fetch
+        run: |
+          grep LIBPATCH charms/ca-scribner-test-charm-2/lib/charms/observability_libs/v0/juju_topology.py
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 5
       - name: Create Pull Request
         id: create-pull-request
         uses: peter-evans/create-pull-request@v4
@@ -67,7 +75,7 @@ jobs:
           commit-message: Update charm libs
           signoff: false
           delete-branch: true
-          branch: update-charm-libs
+          branch: automated-update-charm-libs
       - name: Print Created Pull Request
         if: ${{ steps.create-pull-request.outputs.pull-request-number }}
         run: |
