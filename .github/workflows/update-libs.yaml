@@ -47,35 +47,69 @@ jobs:
       - uses: actions/checkout@v2
         with: 
           fetch-depth: 0
-      # - run: sudo snap install charmcraft --channel ${{ inputs.charmcraft_channel }}
-      # - name: update charm libs
-      #   env:
-      #     CHARMCRAFT_AUTH: ${{ secrets.CHARMCRAFT_CREDENTIALS }}
-      #   run: charmcraft fetch-lib
       - name: show charm-2 LIBPATCH before fetch
         run: |
           grep LIBPATCH charms/ca-scribner-test-charm-2/lib/charms/observability_libs/v0/juju_topology.py
-      - name: Check libraries
-        uses: canonical/charming-actions/check-libraries@1.0.3
-        with:
-          credentials: "${{ secrets.CHARMCRAFT_CREDENTIALS }}"
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          charm-path: "${{ matrix.charm-path }}"
+      # TODO: Can we use the charming-action for this instead?  That could give us better messaging
+      - run: sudo snap install charmcraft --channel ${{ inputs.charmcraft_channel }}
+      - name: update charm libs
+        env:
+          CHARMCRAFT_AUTH: ${{ secrets.CHARMCRAFT_CREDENTIALS }}
+        working-directory: ${{ matrix.charm-path }}
+        run: charmcraft fetch-lib
+      # TODO: This does not work here because the charming-action revert's its own changes after checking.  
+      #       This is done [here](https://github.com/canonical/charming-actions/blob/45b5fb810fe761aa4120e79d134f9bd8d87f4f51/src/actions/check-libraries/check-libraries.ts#L70).  
+      #       If we made that configurable (boolean input option that lets us skip it), it should
+      #       work for us here (but not sure where the messages get written to, so maybe not worthwhile)
+      # - name: Check libraries
+      #   uses: canonical/charming-actions/check-libraries@1.0.3
+      #   with:
+      #     credentials: "${{ secrets.CHARMCRAFT_CREDENTIALS }}"
+      #     github-token: "${{ secrets.GITHUB_TOKEN }}"
+      #     charm-path: "${{ matrix.charm-path }}"
       - name: show charm-2 LIBPATCH after fetch
         run: |
           grep LIBPATCH charms/ca-scribner-test-charm-2/lib/charms/observability_libs/v0/juju_topology.py
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        timeout-minutes: 5
+      # DEBUG: For debugging
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   timeout-minutes: 5
+
+      # Assembles inputs and applies defaults before creating PR
+      - name: Compile PR inputs
+        id: compile-inputs
+        run: |
+          # charm name and branch suffix
+          # if charm_path = ./ --> charm_name='', branch_suffix='' (null)
+          # if charm_path != ./ (eg: a charm in a ./charms dir) --> tag_prefix = 'some-charm'
+          if [ ${{ matrix.charm-path }} == './' ]; then
+            CHARM_NAME=""
+            BRANCH_SUFFIX=""
+            PR_MESSAGE_SUFFIX=""
+          else
+            CHARM_NAME="$(basename ${{ matrix.charm-path }} )"
+            BRANCH_SUFFIX="-$CHARM_NAME"
+            PR_MESSAGE_SUFFIX=" ($CHARM_NAME)"
+          fi
+          echo "setting output of charm-name=$CHARM_NAME"
+          echo "::set-output name=charm-name::$CHARM_NAME"
+
+          echo "setting output of branch-suffix=$BRANCH_SUFFIX"
+          echo "::set-output name=branch-suffix::$BRANCH_SUFFIX"
+
+          echo "setting output of pr_message-suffix=$PR_MESSAGE_SUFFIX"
+          echo "::set-output name=pr_message-suffix::$PR_MESSAGE_SUFFIX"
+
       - name: Create Pull Request
         id: create-pull-request
         uses: peter-evans/create-pull-request@v4
         with:
-          title: 'Update Charm Libs by bot'
-          commit-message: Update charm libs
+          title: "(Automated) Update Charm Libs${{ steps.compile-inputs.pr_message-suffix}}"
+          commit-message: "Update charm libs${{ steps.compile-inputs.pr_message-suffix}}"
           signoff: false
           delete-branch: true
-          branch: automated-update-charm-libs
+          branch: "automated-update-charm-libs${{ steps.compile-inputs.branch-suffix"
+
       - name: Print Created Pull Request
         if: ${{ steps.create-pull-request.outputs.pull-request-number }}
         run: |
