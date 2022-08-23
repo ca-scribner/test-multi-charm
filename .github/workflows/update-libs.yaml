@@ -44,6 +44,9 @@ jobs:
       matrix:
         charm-path: ${{ fromJson(needs.get-charm-paths.outputs.charm-paths) }}
     steps:
+      - uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
       # - run: sudo snap install charmcraft --channel ${{ inputs.charmcraft_channel }}
       # - name: update charm libs
       #   env:
