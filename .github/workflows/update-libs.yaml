@@ -51,7 +51,7 @@ jobs:
         run: |
           grep LIBPATCH charms/ca-scribner-test-charm-2/lib/charms/observability_libs/v0/juju_topology.py
       # TODO: Can we use the charming-action for this instead?  That could give us better messaging
-      - run: sudo snap install charmcraft --channel ${{ inputs.charmcraft_channel }}
+      - run: sudo snap install charmcraft --channel ${{ inputs.charmcraft_channel }} --classic
       - name: update charm libs
         env:
           CHARMCRAFT_AUTH: ${{ secrets.CHARMCRAFT_CREDENTIALS }}
