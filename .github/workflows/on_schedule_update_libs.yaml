@@ -1,0 +1,17 @@
+name: Update Charm Libraries on Schedule
+
+on: 
+  schedule:
+    # Every day at 1:00AM UTC
+    - cron: '0 1 * * *'
+    # FOR DEBUGGING, every 5 minutes of every day
+    - cron: '*/5 * * * *' 
+
+jobs:
+  bump-libraries:
+    name: Check Charm Library Versions
+    uses: ./.github/workflows/update-libs.yaml
+    inputs:
+      charmcraft_channel: 'latest/candidate'
+    secrets:
+      CHARMCRAFT_CREDENTIALS: "${{ secrets.CHARMCRAFT_CREDENTIALS }}"
