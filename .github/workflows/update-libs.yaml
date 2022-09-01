@@ -47,10 +47,6 @@ jobs:
       - uses: actions/checkout@v2
         with: 
           fetch-depth: 0
-      - name: show charm-2 LIBPATCH before fetch
-        run: |
-          grep LIBPATCH charms/ca-scribner-test-charm-2/lib/charms/observability_libs/v0/juju_topology.py
-      # TODO: Can we use the charming-action for this instead?  That could give us better messaging
       - run: sudo snap install charmcraft --channel ${{ inputs.charmcraft_channel }} --classic
       - name: update charm libs
         env:
@@ -67,14 +63,6 @@ jobs:
       #     credentials: "${{ secrets.CHARMCRAFT_CREDENTIALS }}"
       #     github-token: "${{ secrets.GITHUB_TOKEN }}"
       #     charm-path: "${{ matrix.charm-path }}"
-      - name: show charm-2 LIBPATCH after fetch
-        run: |
-          grep LIBPATCH charms/ca-scribner-test-charm-2/lib/charms/observability_libs/v0/juju_topology.py
-      # DEBUG: For debugging
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
-      #   timeout-minutes: 5
-
       # Assembles inputs and applies defaults before creating PR
       - name: Compile PR inputs
         id: compile-inputs
