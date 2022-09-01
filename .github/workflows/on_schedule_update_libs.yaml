@@ -11,7 +11,7 @@ jobs:
   bump-libraries:
     name: Check Charm Library Versions
     uses: ./.github/workflows/update-libs.yaml
-    inputs:
+    with:
       charmcraft_channel: 'latest/candidate'
     secrets:
       CHARMCRAFT_CREDENTIALS: "${{ secrets.CHARMCRAFT_CREDENTIALS }}"
