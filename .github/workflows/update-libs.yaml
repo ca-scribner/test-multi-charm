@@ -93,6 +93,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           title: "(Automated) Update Charm Libs${{ steps.compile-inputs.outputs.pr_message-suffix}}"
+          body: "Update charm libs${{ steps.compile-inputs.outputs.pr_message-suffix}}"
           commit-message: "Update charm libs${{ steps.compile-inputs.outputs.pr_message-suffix}}"
           signoff: false
           delete-branch: true
