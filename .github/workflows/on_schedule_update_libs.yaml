@@ -4,8 +4,6 @@ on:
   schedule:
     # Every day at 1:00AM UTC
     - cron: '0 1 * * *'
-    # FOR DEBUGGING, every 5 minutes of every day
-    - cron: '*/5 * * * *' 
 
 jobs:
   bump-libraries:
