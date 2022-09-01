@@ -76,7 +76,7 @@ from typing import Dict, List, Optional
 LIBID = "bced1658f20f49d28b88f61f83c2d232"
 
 LIBAPI = 0
-LIBPATCH = 2
+LIBPATCH = 1
 
 
 class InvalidUUIDError(Exception):
@@ -273,7 +273,9 @@ class JujuTopology:
         produced the matchers).
         """
         items = self.label_matcher_dict.items()
-        return ", ".join(['{}="{}"'.format(key, value) for key, value in items if value])
+        return ", ".join(
+            ['{}="{}"'.format(key, value) for key, value in items if value]
+        )
 
     @property
     def model(self) -> str:
