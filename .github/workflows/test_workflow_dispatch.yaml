@@ -28,7 +28,7 @@ jobs:
     outputs:
       charm_paths_list: ${{ steps.get-charm-paths.outputs.CHARM_PATHS_LIST }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Get paths for all charms in repo
         id: get-charm-paths
         run: bash ./.github/workflows/get-charm-paths.sh
@@ -48,7 +48,7 @@ jobs:
         run: echo "destination_channel = ${{ github.inputs.destination_channel }}"
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 

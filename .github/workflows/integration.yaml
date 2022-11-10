@@ -14,7 +14,7 @@ jobs:
     outputs:
       charm_paths_list: ${{ steps.get-charm-paths.outputs.CHARM_PATHS_LIST }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Get paths for all charms in repo
         id: get-charm-paths
         run: bash ./.github/workflows/get-charm-paths.sh
@@ -29,7 +29,7 @@ jobs:
         charm-path: ${{ fromJson(needs.get-charm-paths.outputs.charm_paths_list) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Check libs
@@ -48,5 +48,5 @@ jobs:
       matrix: 
         charm-path: ${{ fromJson(needs.get-charm-paths.outputs.charm_paths_list) }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: echo "success - would run on ${{ matrix.charm-path }}"
