@@ -53,7 +53,7 @@ jobs:
           fetch-depth: 0
 
       - name: Select charmhub channel
-        uses: canonical/charming-actions/channel@2.0.0-rc
+        uses: canonical/charming-actions/channel@2.1.1
         id: select-channel
         if: ${{ inputs.destination_channel == '' }}
 
@@ -87,7 +87,7 @@ jobs:
           echo "::set-output name=tag_prefix::$tag_prefix"
 
       - name: Upload charm to charmhub
-        uses: canonical/charming-actions/upload-charm@2.0.0-rc
+        uses: canonical/charming-actions/upload-charm@2.1.1
         with:
           credentials: ${{ steps.parse-inputs.outputs.charmcraft_credentials }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
