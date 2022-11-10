@@ -27,7 +27,7 @@ jobs:
     outputs:
       charm-paths: ${{ steps.get-charm-paths.outputs.charm-paths }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with: 
           fetch-depth: 0
       - name: Get paths for all charms in this repo
@@ -44,7 +44,7 @@ jobs:
       matrix:
         charm-path: ${{ fromJson(needs.get-charm-paths.outputs.charm-paths) }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with: 
           fetch-depth: 0
       - run: sudo snap install charmcraft --channel ${{ inputs.charmcraft_channel }} --classic
