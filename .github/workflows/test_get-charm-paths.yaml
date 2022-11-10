@@ -30,7 +30,7 @@ jobs:
       # Note this uses a different name than the others
       charm_paths: ${{ steps.get-charm-paths.outputs.CHARM_PATHS_LIST }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with: 
           fetch-depth: 0
       # - name: Setup tmate session
@@ -67,7 +67,7 @@ jobs:
     outputs:
       charm_paths: ${{ steps.get-charm-paths.outputs.charm-paths }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with: 
           fetch-depth: 0
       - name: Get paths for all charms in this repo
@@ -101,7 +101,7 @@ jobs:
     outputs:
       charm_paths: ${{ steps.get-charm-paths.outputs.charm-paths }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with: 
           fetch-depth: 0
       - name: Get paths for all charms in this repo
